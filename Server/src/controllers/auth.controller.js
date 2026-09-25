@@ -1,10 +1,6 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import {
-  generateToken,
-  verifyAccessToken,
-  verifyRefreshToken,
-} from "../utils/auth.js";
+import { generateToken, verifyRefreshToken } from "../utils/auth.js";
 
 const registerController = async (req, res) => {
   try {
@@ -27,7 +23,7 @@ const registerController = async (req, res) => {
     const user = await userModel.create({
       email,
       name,
-      passwordHash: await bcrypt.hash(password, 10),
+      passwordHash: await bcrypt.hash(password, 12),
     });
 
     const { accessToken, refreshToken } = generateToken({
