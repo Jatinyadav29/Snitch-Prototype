@@ -26,4 +26,21 @@ const registerSchema = z.object({
     .min(8, "Password must be at least 8 characters"),
 });
 
-export default registerSchema;
+const loginSchema = z.object({
+  email: z
+    .string("Email is required")
+    .trim()
+    .toLowerCase()
+    .pipe(z.email("Enter a valid Email address")),
+
+  password: z
+    .string("Password is required")
+    .trim()
+    .refine((value) => value.trim().length > 0, {
+      error: "Password cannot be empty or only spaces",
+      abort: true,
+    })
+    .min(8, "Password must be at least 8 characters"),
+});
+
+export { registerSchema, loginSchema };
