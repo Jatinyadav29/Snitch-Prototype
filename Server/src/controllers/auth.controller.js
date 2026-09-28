@@ -161,9 +161,9 @@ const refreshTokenController = async (req, res) => {
 
 const getMyInfoController = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { id } = req.user;
 
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById(id);
 
     if (!user) {
       return res.status(404).json({

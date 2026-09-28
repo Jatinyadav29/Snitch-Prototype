@@ -5,9 +5,9 @@ import {
   refreshTokenController,
   registerController,
 } from "../controllers/auth.controller.js";
-import validateBody from "../middlewares/authValidator.middleware.js";
+import validateBody from "../middlewares/validator.middleware.js";
 import { loginSchema, registerSchema } from "../validator/auth.zod.js";
-import authenticate from "../middlewares/auth.middleware.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 

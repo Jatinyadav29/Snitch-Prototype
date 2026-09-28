@@ -4,8 +4,8 @@ const productSchema = z.object({
   title: z
     .string("Title is required")
     .trim()
-    .minLength(3, "Title must be at least 3 characters")
-    .maxLength(100, "Title must be under 100 characters")
+    .min(3, "Title must be at least 3 characters")
+    .max(100, "Title must be under 100 characters")
     .regex(
       /^[A-Za-z ]+$/,
       "Title must contain only English letters and spaces",
@@ -14,16 +14,31 @@ const productSchema = z.object({
   discription: z
     .string("Discription is required")
     .trim()
-    .minLength(20, "Discription must be at least 20 characters")
-    .maxLength(500, "Discription must be under 500 characters"),
+    .min(20, "Discription must be at least 20 characters")
+    .max(500, "Discription must be under 500 characters"),
+
+  //   images: z
+  //     .array(z.string())
+  //     .max(5, "A product can have 5 images at most")
+  //     .optional(),
 
   price: z.object({
-    amount: z.float32("Amount is required").min(0, "Amount cannot be negative"),
-    currency: z.enum(["INR", "USD"], { error: "Invalid currency" }),
+    amount: z.number("Amount is required").min(0, "Amount cannot be negative"),
+    currency: z
+      .enum(["INR", "USD"], {
+        error: "Invalid currency",
+      })
+      .optional(),
   }),
 
-  sizes: z.object({
-    size: z.enum(["XS", "S", "M", "L", "XL", "XXL"], { error: "Invalid Size" }),
-    stock: z.number().min(0, "Stock cannot be negative"),
-  }),
+  sizes: z.array(
+    z.object({
+      size: z.enum(["XS", "S", "M", "L", "XL", "XXL"], {
+        error: "Invalid size",
+      }),
+      stock: z.number().min(0, "Stock cannot be negative").optional(),
+    }),
+  ),
 });
+
+export default productSchema;

@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema({
     minlength: 20,
     maxlength: 500,
   },
-  imgaes: {
+  images: {
     type: [{ type: String }],
     validate: {
       validator: (image) => image.length <= 5,

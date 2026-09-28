@@ -21,4 +21,14 @@ const authenticate = (req, res, next) => {
   }
 };
 
-export default authenticate;
+const isSeller = (req, res, next) => {
+  if (req.user.role !== "seller") {
+    return res.status(403).json({
+      message: "Access Forbidden",
+    });
+  }
+
+  next();
+};
+
+export { authenticate, isSeller };
