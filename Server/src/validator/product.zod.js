@@ -17,11 +17,6 @@ const productSchema = z.object({
     .min(20, "Discription must be at least 20 characters")
     .max(500, "Discription must be under 500 characters"),
 
-  //   images: z
-  //     .array(z.string())
-  //     .max(5, "A product can have 5 images at most")
-  //     .optional(),
-
   price: z.object({
     amount: z.number("Amount is required").min(0, "Amount cannot be negative"),
     currency: z

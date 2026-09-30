@@ -12,7 +12,7 @@ const cartSchema = z.object({
         ),
       quantity: z
         .number("Quantity is required")
-        .int("Quantity must be integer")
+        .int("Quantity must be integer greater than 0")
         .min(1)
         .default(1),
       size: z.enum(["XS", "S", "M", "L", "XL", "XXL"], {
