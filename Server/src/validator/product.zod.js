@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import * as z from "zod";
 
 const productSchema = z.object({
@@ -36,4 +37,16 @@ const productSchema = z.object({
   ),
 });
 
-export default productSchema;
+const unlistProductSchema = z.object({
+  id: z
+    .string("Product ID is required")
+    .refine((id) => mongoose.Types.ObjectId.isValid(id), "Invalid product ID"),
+});
+
+const listProductSchema = z.object({
+  id: z
+    .string("Product ID is required")
+    .refine((id) => mongoose.Types.ObjectId.isValid(id), "Invalid product ID"),
+});
+
+export { productSchema, unlistProductSchema, listProductSchema };

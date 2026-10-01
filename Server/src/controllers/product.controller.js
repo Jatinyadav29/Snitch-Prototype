@@ -5,6 +5,8 @@ const createProductController = async (req, res) => {
   try {
     const { title, discription, price, sizes } = req.body;
 
+    // *! use promise.all - research and figure out the problem and update the logic to get fast
+
     const fileUrls = [];
 
     for (let i = 0; i < req.files.length; i++) {
@@ -45,7 +47,7 @@ const createProductController = async (req, res) => {
 
 const getAllProductsController = async (req, res) => {
   try {
-    const products = await productModel.find();
+    const products = await productModel.find({ published: true });
 
     return res.status(200).json({
       message: "Products found",
@@ -62,4 +64,85 @@ const getAllProductsController = async (req, res) => {
   }
 };
 
-export { createProductController, getAllProductsController };
+const sellerGetAllProductsController = async (req, res) => {
+  try {
+    const products = await productModel.find({});
+
+    return res.status(200).json({
+      message: "All products fetched",
+      data: {
+        products,
+      },
+    });
+  } catch (error) {
+    console.log(`Error in seller get all products controller - ${error}`);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+const unlistProductController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await productModel.findById(id);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    await productModel.findByIdAndUpdate(id, {
+      published: false,
+    });
+
+    return res.status(200).json({
+      message: "Product unpublished successfully",
+    });
+  } catch (error) {
+    console.log(`Error in unlist product controller - ${error}`);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+const listProductController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await productModel.findById(id);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    await productModel.findByIdAndUpdate(id, {
+      published: true,
+    });
+
+    return res.status(200).json({
+      message: "Product published successfully",
+    });
+  } catch (error) {
+    console.log(`Error in list product controller - ${error}`);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+export {
+  createProductController,
+  getAllProductsController,
+  sellerGetAllProductsController,
+  unlistProductController,
+  listProductController,
+};
